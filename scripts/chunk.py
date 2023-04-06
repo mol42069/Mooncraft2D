@@ -6,10 +6,11 @@ light_blue = (0, 60, 100)                       # sky color
 
 class Chunk:
 
-    def __init__(self, x, width, seed, sprites, sprite_size):
-        self.surface = pg.Surface((32 * sprite_size, 256 * sprite_size))         # we make the bg sky color!
+    def __init__(self, x, y, width, seed, sprites, sprite_size):
+        self.surface = pg.Surface((width * sprite_size, 256 * sprite_size))         # we make the bg sky color!
         self.surface.fill(light_blue)
         self.x = x                       # only x because a chunk will go from top to bottom
+        self.y = y
         self.width = width
         self.seed = seed
         self.sprites = sprites
@@ -34,8 +35,6 @@ class Chunk:
         return
 
     def draw(self, root, pos_x, pos_y):
-        pos_x *= self.sprite_size
-        pos_y *= self.sprite_size
         root.blit(self.surface, (pos_x, pos_y))
         return root
 

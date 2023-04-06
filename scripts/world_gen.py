@@ -1,7 +1,7 @@
 import noise
 from scripts import enums
 
-def gen(chunk_pos, chunk_width, amplifier=15, noise_gen_val = 0.50000, chunk_height = 256):
+def gen(chunk_pos, chunk_width, amplifier=15, noise_gen_val = 0.20000, chunk_height = 256):
     chunk = []
 
     for y in range(chunk_height):

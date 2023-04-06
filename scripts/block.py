@@ -1,4 +1,3 @@
-from scripts import enums
 import pygame as pg
 
 class Block:
