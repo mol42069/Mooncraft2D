@@ -9,6 +9,12 @@ class Block:
         self.sprite = pg.transform.scale(sprite, (sprite_size, sprite_size))
         self.pos = s_pos
 
+    def get_data(self):
+        data = [
+            self.type,
+            self.pos
+        ]
+        return data
 
     def destroy(self):
         del self

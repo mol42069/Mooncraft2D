@@ -8,6 +8,7 @@ from scripts import enums
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
 
 sprites = {}
+sprite_lst = []
 animation_sprites = {}
 size_on_sheet = (100, 100)
 
@@ -22,7 +23,7 @@ def init(scale=30, bg_scale=(1920 * 1.5, 1080 * 1.5), path_single='./resources/s
     return
 
 def load_single(path, scale):
-    global sprites
+    global sprites, sprite_lst
     sprite_dir = os.listdir(path)
     # load all Sprites in Single-Folder
     for file in sprite_dir:
@@ -30,6 +31,7 @@ def load_single(path, scale):
             cur_sprite = pygame.image.load(path + '/' + file)             # because if there isn't it is another folder
             cur_sprite = pygame.transform.scale(cur_sprite, (scale, scale))
             sprites.update({'single_' + file : cur_sprite})
+            sprite_lst.append('single_' + file)
         else:
             new_dir = os.listdir(path + '/' + file)                       # we iterate over all files/dictionary
             for one_file in new_dir:
@@ -37,6 +39,7 @@ def load_single(path, scale):
                     cur_sprite = pygame.image.load(path + '/' + file + '/' + one_file)
                     cur_sprite = pygame.transform.scale(cur_sprite, (scale, scale))
                     sprites.update({'single_' + one_file : cur_sprite})
+                    sprite_lst.append('single_' + one_file)
                 else:
                     nn_dir = os.listdir(path + '/' + file + '/' + one_file)
                     for two_file in nn_dir:
@@ -47,10 +50,11 @@ def load_single(path, scale):
                             cur_sprite = pygame.image.load(path + '/' + file + '/' + one_file + '/' + two_file)
                             cur_sprite = pygame.transform.scale(cur_sprite, (scale, scale))
                             sprites.update({'single_' + two_file : cur_sprite})
+                            sprite_lst.append('single_' + two_file)
     return
 
 def load_multi(path, scale):
-    global sprites
+    global sprites, sprite_lst
     sprite_dir = os.listdir(path)
     # load all Sprites in Single-Folder
     for file in sprite_dir:
@@ -58,6 +62,7 @@ def load_multi(path, scale):
             cur_sprite = pygame.image.load(path + '/' +  file)             # because if there isn't it is another folder
             cur_sprite = pygame.transform.scale(cur_sprite, (scale, scale))
             sprites.update({'multi_' + file : cur_sprite})
+            sprite_lst.append('multi_' + file)
         else:
             new_dir = os.listdir(path + '/' +  file)                       # we iterate over all files/dictionary
             for one_file in new_dir:
@@ -65,6 +70,7 @@ def load_multi(path, scale):
                     cur_sprite = pygame.image.load(path + '/' +  file + '/' +  one_file)
                     cur_sprite = pygame.transform.scale(cur_sprite, (scale, scale))
                     sprites.update({'multi_' + one_file : cur_sprite})
+                    sprite_lst.append('multi_' + one_file)
                 else:
                     nn_dir = os.listdir(path + '/' +  file + '/' +  one_file)
                     for two_file in nn_dir:
@@ -75,6 +81,7 @@ def load_multi(path, scale):
                             cur_sprite = pygame.image.load(path + '/' +  file + '/' +  one_file + '/' +  two_file)
                             cur_sprite = pygame.transform.scale(cur_sprite, (scale, scale))
                             sprites.update({'multi_' + two_file : cur_sprite})
+                            sprite_lst.append('multi_' + two_file)
     return
 
 def load_bg(path, scale):                # TODO: make the background resizeable so screensize
@@ -84,6 +91,7 @@ def load_bg(path, scale):                # TODO: make the background resizeable 
         cur_sprite = pygame.image.load(path + '/' + img)
         cur_sprite = pygame.transform.scale(cur_sprite, scale)
         sprites.update({'bg_' + img : cur_sprite})
+        sprite_lst.append('bg_' + img)
     return
 
 def load_animations(path, scale):
@@ -138,6 +146,9 @@ def get_from_multi(sheet_pos=enums.SheetPos.Empty, sheet_name='name in sprite-di
 
 def get_movement():
     return animation_sprites
+
+def get_atlas():
+    return sprite_lst
 
 def get_sprites():
     return sprites

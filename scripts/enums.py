@@ -19,8 +19,14 @@ class WBLayout(Enum):
     directory = 1
 
 class Block(Enum):
-    dirt = 'single_dirt.png'
-    grass = 'single_grass.png'
-    stone = 'single_stone.png'
+    dirt = 'single_001_dirt.png'
+    grass = 'single_002_grass.png'
+    stone = 'single_003_stone.png'
 
-    air = 999
+    air = 0
+
+class SBlock(Enum):
+    air = 0, '.'
+    dirt = 1, 'single_001_dirt.png'
+    grass = 2, 'single_002_grass.png'
+    stone = 3, 'single_003_stone.png'
