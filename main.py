@@ -4,6 +4,7 @@ import time
 from scripts import chunk
 from scripts import saver
 from scripts import SpriteLoader
+from scripts import chunk_mng as c_mng
 
 
 grey = (50, 50, 50)
@@ -42,13 +43,17 @@ def main():
     s_atlas = SpriteLoader.get_atlas()
     s_all = [sprites, s_atlas]
     root.fill(grey)
-    chunks = [chunk.Chunk(90, -1000, 64, seed, s_all, sprite_size, save_name)]
+    chunk_width = 64
+    cur_pos = [0, -15]
+    chunks = [chunk.Chunk(0, -15, chunk_width, seed, s_all, sprite_size)]
+    cur_chunks = chunks
     fps_counter = 0
     t = time.time()
     data = [['Items etc']]
     path = './resources/worldSaves/' + save_name + '.csv'
 
     while True:
+        chunks, root = c_mng.manage(root, cur_pos[0], chunks, chunk_width)
         f_t = time.time()
         if f_t - t > 1:
             saver.save_world(data, chunks, path)
@@ -80,16 +85,14 @@ def main():
         else:
             down = False
         if left:
-            chunks[0].move(10, 0)
+            c_mng.move(0.1, 0)
         elif right:
-            chunks[0].move(-10, 0)
-
+            c_mng.move(-0.1, 0)
         if up:
-            chunks[0].move(0, 10)
+            c_mng.move(0, 0.1)
         elif down:
-            chunks[0].move(0, -10)
+            c_mng.move(0, -0.1)
 
-        chunks[0].draw(root)
 
 
 if __name__ == '__main__':

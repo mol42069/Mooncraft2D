@@ -2,13 +2,12 @@ from scripts import world_gen
 from scripts import block
 from scripts import enums
 import pygame as pg
-import csv
 
 light_blue = (0, 60, 100)                       # sky color
 
 class Chunk:
 
-    def __init__(self, x, y, width, seed, sprites, sprite_size, save_name):
+    def __init__(self, x, y, width, seed, sprites, sprite_size):
         self.surface = pg.Surface((width * sprite_size, 256 * sprite_size))         # we make the bg sky color!
         self.surface.fill(light_blue)
         self.x = x                                          # only x because a chunk will go from top to bottom
@@ -64,7 +63,7 @@ class Chunk:
 
 
     def draw(self, root):
-        root.blit(self.surface, (self.x, self.y))
+        root.blit(self.surface, (self.x * self.sprite_size, self.y * self.sprite_size))
         return root
 
     def gen_chunk(self):
