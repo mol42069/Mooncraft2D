@@ -45,18 +45,21 @@ def main():
     root.fill(grey)
     chunk_width = 64
     cur_pos = [0, -15]
-    chunks = [chunk.Chunk(0, -15, chunk_width, seed, s_all, sprite_size)]
-    cur_chunks = chunks
+    chunks = {0 : chunk.Chunk(0, -15, chunk_width, seed, s_all, sprite_size)}
+    chunks.update({-1 : chunk.Chunk(0 - chunk_width, -15, chunk_width, seed, s_all, sprite_size)})
+    chunks.update({1 : chunk.Chunk(0 + chunk_width, -15, chunk_width, seed, s_all, sprite_size)})
+    chunks.update({-2: chunk.Chunk(0 - 2 * chunk_width, -15, chunk_width, seed, s_all, sprite_size)})
+    chunks.update({2: chunk.Chunk(0 + 2 * chunk_width, -15, chunk_width, seed, s_all, sprite_size)})
+
     fps_counter = 0
     t = time.time()
-    data = [['Items etc']]
-    path = './resources/worldSaves/' + save_name + '.csv'
+    c_mng.m_init(chunks)
 
     while True:
-        chunks, root = c_mng.manage(root, cur_pos[0], chunks, chunk_width)
+        chunks, root = c_mng.manage(root, cur_pos[0], chunk_width)
         f_t = time.time()
         if f_t - t > 1:
-            saver.save_world(data, chunks, path)
+            #saver.save_world(data, chunks, path)
             print(fps_counter)
             fps_counter = 0
             t = f_t
@@ -67,6 +70,7 @@ def main():
         for event in pg.event.get():
             match event.type:
                 case pg.QUIT:
+                    c_mng.threads_started = False
                     exit()
         if key_pressed(pg.K_d):
             right = True
@@ -84,16 +88,21 @@ def main():
             down = True
         else:
             down = False
+        if key_pressed(pg.K_ESCAPE):
+            c_mng.threads_started = False
+            exit()
         if left:
-            c_mng.move(0.1, 0)
+            c_mng.move(0.2, 0)
+            cur_pos[0] -= 0.2
         elif right:
-            c_mng.move(-0.1, 0)
+            c_mng.move(- 0.2, 0)
+            cur_pos[0] += 0.2
         if up:
-            c_mng.move(0, 0.1)
+            c_mng.move(0, 0.2)
+            cur_pos[1] += 0.2
         elif down:
-            c_mng.move(0, -0.1)
-
-
+            c_mng.move(0, - 0.2)
+            cur_pos[1] -= 0.2
 
 if __name__ == '__main__':
     main()

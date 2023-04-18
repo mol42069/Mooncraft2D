@@ -11,6 +11,7 @@ class Chunk:
         self.surface = pg.Surface((width * sprite_size, 256 * sprite_size))         # we make the bg sky color!
         self.surface.fill(light_blue)
         self.x = x                                          # only x because a chunk will go from top to bottom
+        self.prev_chunk = None
         self.y = y
         self.width = width
         self.seed = seed

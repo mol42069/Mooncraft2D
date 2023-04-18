@@ -13,7 +13,7 @@ def gen(chunk_pos, chunk_width, amplifier=15, noise_gen_val = 0.20000, chunk_hei
 
     height_map = []
     for x in range(0, chunk_width):
-        height = noise.pnoise1(((x + chunk_width * chunk_pos) * noise_gen_val / (256 -  x * noise_gen_val)), repeat = 9999999) * amplifier
+        height = noise.pnoise1(((chunk_width * chunk_pos) * noise_gen_val / (256 -  x * noise_gen_val)), repeat = 9999999) * amplifier
         height_map.append(int(height) + 100)
     for y in range(chunk_height):
         for x in range(chunk_width):
