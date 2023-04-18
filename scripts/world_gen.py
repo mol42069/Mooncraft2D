@@ -1,8 +1,12 @@
-import noise
+# import noise
 from scripts import enums
+from perlin_noise import PerlinNoise
+import matplotlib.pyplot as plt
 
-def gen(chunk_pos, chunk_width, amplifier=15, noise_gen_val = 0.20000, chunk_height = 256):
+def gen(chunk_pos, chunk_width, chunk_height = 256, seed=9999999):
     chunk = []
+    max_x = 128
+    seed += chunk_pos * chunk_width
 
     for y in range(chunk_height):
         chunk_x = []
@@ -12,8 +16,9 @@ def gen(chunk_pos, chunk_width, amplifier=15, noise_gen_val = 0.20000, chunk_hei
         chunk.append(chunk_x)
 
     height_map = []
+    noise = PerlinNoise(octaves=10, seed=seed)
     for x in range(0, chunk_width):
-        height = noise.pnoise1(((chunk_width * chunk_pos) * noise_gen_val / (256 -  x * noise_gen_val)), repeat = 9999999) * amplifier
+        height = noise((x + chunk_width * chunk_pos) / max_x) * 15 + 100
         height_map.append(int(height) + 100)
     for y in range(chunk_height):
         for x in range(chunk_width):
