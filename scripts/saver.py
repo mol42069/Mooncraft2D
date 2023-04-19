@@ -1,9 +1,9 @@
 import csv
 
-def save_world(data, chunks, path):
+def save_world(data, chunks, path='./resources/worldSaves/s.csv'):
     csv_data = [data]
     for chunk in chunks:
-        csv_data = chunk.save_chunk(csv_data, 1)
+        csv_data = chunks[chunk].save_chunk(csv_data, chunk)
 
     save(csv_data, path)
 

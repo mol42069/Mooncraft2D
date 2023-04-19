@@ -12,7 +12,7 @@ sprite_lst = []
 animation_sprites = {}
 size_on_sheet = (100, 100)
 
-def init(scale=30, bg_scale=(1920 * 1.5, 1080 * 1.5), path_single='./resources/sprites/blocks',
+def init(scale=30, bg_scale=(1920 * 1.5, 1080 * 1.5), path_single='./resources/sprites',
          path_multi='./resources/sprites/multi', path_ani = './resources/sprites/animations',
          path_bg = './resources/sprites/background'):
 

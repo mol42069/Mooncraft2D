@@ -2,6 +2,7 @@ from scripts import world_gen
 from scripts import block
 from scripts import enums
 import pygame as pg
+import math
 
 light_blue = (0, 60, 100)                       # sky color
 
@@ -44,12 +45,10 @@ class Chunk:
         self.save_data =  data
 
 
-    def save_chunk(self, csv_data, chunk_data_begin=1):
+    def save_chunk(self, csv_data, chunk, chunk_data_begin=1, max_min = 2):
         self.get_contents()
-        if self.x < 0:
-            csv_data.insert(chunk_data_begin, self.save_data)
-        else:
-            csv_data.append(self.save_data)
+        save_csv_data = [chunk, self.save_data]
+        csv_data.insert(chunk_data_begin, save_csv_data)
 
         return csv_data
 
@@ -59,6 +58,7 @@ class Chunk:
         return
 
     def move(self, move_x, move_y):
+        #self.check_col()
         self.x += move_x
         self.y += move_y
 
@@ -68,19 +68,41 @@ class Chunk:
         return root
 
     def gen_chunk(self):
-        this_col = []
+        this_row = []
         self.contents = world_gen.gen(self.x + self.seed, self.width)
-        for y, col in enumerate(self.contents):
-            this_col = []
-            for x, cell in enumerate(col):
+        for y, row in enumerate(self.contents):
+            this_row = []
+            for x, cell in enumerate(row):
                 if cell.value != 0:
                     this_sp = self.sprites[cell.value]
                     b = block.Block(cell, this_sp, (x, y), self.sprite_size)
-                    this_col.append(b)
+                    this_row.append(b)
                     self.surface = b.draw(self.surface, (x * self.sprite_size, y * self.sprite_size))
 
                 else:
-                    this_col.append(None)
+                    this_row.append(None)
 
-        self.blocks.append(this_col)
+        self.blocks.append(this_row)
+
         return
+
+    def move_check(self, move_x, jump):     # move_x and jump: -1 | 0 | 1
+
+        return
+
+    def ground_col(self, player, pot_pos):
+        final_pos = None
+        b_pos = [math.floor((pot_pos[0]/self.sprite_size) - self.x), math.floor((pot_pos[1]/self.sprite_size) - self.y)]
+        pot_player_rec = player.rec
+        pot_player_rec.topleft = [pot_pos[0] - self.sprite_size / 2, pot_pos[1] - self.sprite_size]
+
+        if self.blocks[b_pos[0]][b_pos[1]].collides(pot_player_rec):
+            final_pos = [
+                            self.blocks[b_pos[0]][b_pos[1]].pos[0] * self.sprite_size + self.sprite_size / 2 + self.x,
+                            player.pos[1]
+                        ]
+            return final_pos
+
+        return  final_pos
+        # because the player pos is in actual pixels and the blocks get their position in relation to the sprite they
+        # are on and in what block they are in that chunk so for final_pos we must address this

@@ -7,7 +7,11 @@ class Block:
 
         self.sprite_size = sprite_size
         self.sprite = pg.transform.scale(sprite, (sprite_size, sprite_size))
+        self.rec = self.sprite.get_rect()
         self.pos = s_pos
+        self.rec.topleft = [ self.pos[0] * sprite_size - sprite_size / 2,
+                             self.pos[1] * sprite_size - sprite_size / 2
+                            ]
 
     def get_data(self):
         data = [
@@ -24,3 +28,7 @@ class Block:
         surface.blit(self.sprite, pos)
 
         return surface
+
+    def collides(self, player_rec):
+        return self.rec.colliderect(player_rec)
+
