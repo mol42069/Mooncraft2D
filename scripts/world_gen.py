@@ -25,5 +25,6 @@ def gen(chunk_pos, chunk_width, chunk_height = 256, seed=9999999):
                 for z in range(chunk_height):
                     if z > y:
                         chunk[z][x] = enums.Block.stone
-    return chunk
+    print(height_map)
+    return chunk, height_map
 

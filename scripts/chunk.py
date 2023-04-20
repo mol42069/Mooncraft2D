@@ -22,8 +22,10 @@ class Chunk:
         self.loaded = True
         self.contents = []                              # 2d array must be init to the size of 1 chunk
         self.blocks = []
+        self.height_map = None
         self.gen_chunk()
         self.save_data = []
+
 
         return
 
@@ -69,7 +71,7 @@ class Chunk:
 
     def gen_chunk(self):
         this_row = []
-        self.contents = world_gen.gen(self.x + self.seed, self.width)
+        self.contents, self.height_map = world_gen.gen(self.x + self.seed, self.width)
         for y, row in enumerate(self.contents):
             this_row = []
             for x, cell in enumerate(row):
@@ -83,10 +85,6 @@ class Chunk:
                     this_row.append(None)
 
         self.blocks.append(this_row)
-
-        return
-
-    def move_check(self, move_x, jump):     # move_x and jump: -1 | 0 | 1
 
         return
 
@@ -106,3 +104,20 @@ class Chunk:
         return  final_pos
         # because the player pos is in actual pixels and the blocks get their position in relation to the sprite they
         # are on and in what block they are in that chunk so for final_pos we must address this
+
+    def col_g(self, player, cur_chunk_id):
+        print(player.pos[0])
+        print(cur_chunk_id)
+        print(self.height_map)
+        print(self.width)
+        print(self.sprite_size)
+        if player.pos[1] - 50 >= self.height_map[math.floor((player.pos[0] - cur_chunk_id * self.width) / self.sprite_size)] * 64:
+            return True
+        else:
+            return False
+
+        # for row in self.blocks:
+        #     for cell in row:
+        #         a = cell.collides(player.a_rec, [self.x / self.sprite_size, self.y / self.sprite_size])
+        #         if a:
+        #             return a

@@ -18,6 +18,8 @@ class Player:
                         1920 / 2 - 25,
                         1080 / 2 - 50
                         ]
+        self.a_rec = self.sprite.get_rect()
+        self.a_rec.topleft = self.pos
 
         return
 

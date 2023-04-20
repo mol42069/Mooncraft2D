@@ -68,7 +68,6 @@ def load():
 
 def manage(root, cur_pos_x, chunk_width):
     global cur_chunks, chunks, cur_chunk_pos, threads_started, player
-
     cur_chunk_pos = math.floor(cur_pos_x / chunk_width) # must be rounded down
     #print(cur_chunk_pos)
 
@@ -96,8 +95,8 @@ def m_init(s_chunk, player_spites):
     chunks = s_chunk
     threads_started = True
     cur_chunks = [chunks[cur_chunk_pos - 1], chunks[cur_chunk_pos], chunks[cur_chunk_pos + 1]]
-
-    player = pl.Player(player_spites)
+    p_pos = [1920 / 2 - 25, (1080 / 2 - 50) + 20 * 50]
+    player = pl.Player(player_spites, p_pos)
 
     thread = threading.Thread(target=load)
     thread.Daemon = True
@@ -129,12 +128,11 @@ def movement():
         else:
             move_m[0] = 2 * move_x
 
-        if move_y == 0 and not on_ground:
+        if move_y == 0:
             on_ground, move_m[1] = falling(move_m[1])
-            if on_ground:
-                move_m[1] = 0
+
         elif move_y == 1 and on_ground:
-            move_m[1] = 2                   # we ignore -1 for now because there is no negative jumping
+            move_m[1] = -2                   # we ignore -1 for now because there is no negative jumping
             move_y = 0
             on_ground = False
         else:
@@ -142,39 +140,41 @@ def movement():
 
         print(move_m)
 
-        cur_chunks[0].move(move_m[0] / 10, move_m[1] / 10)
-        cur_chunks[1].move(move_m[0] / 10, move_m[1] / 10)
-        cur_chunks[2].move(move_m[0] / 10, move_m[1] / 10)
-        cur_chunks[3].move(move_m[0] / 10, move_m[1] / 10)
-        cur_chunks[4].move(move_m[0] / 10, move_m[1] / 10)
+        cur_chunks[0].move(move_m[0] / 100, move_m[1] / 100)
+        cur_chunks[1].move(move_m[0] / 100, move_m[1] / 100)
+        cur_chunks[2].move(move_m[0] / 100, move_m[1] / 100)
+        cur_chunks[3].move(move_m[0] / 100, move_m[1] / 100)
+        cur_chunks[4].move(move_m[0] / 100, move_m[1] / 100)
         time.sleep(0.001)
 
 
 def falling(y_speed):
     global gravity
     final_pos = collide_ground(y_speed)
-    if final_pos is None:
+    print(final_pos)
+    if not final_pos:
         on_ground = False
     else:
         on_ground = True
         y_speed = 0
-        player.pos = final_pos
 
-    print(final_pos)
-
-    if y_speed - gravity < +1.9 or y_speed - gravity < +2:
-        y_speed = 2
+    if not on_ground:
+        if y_speed - gravity < -4.9:
+            y_speed = -5
+        else:
+            y_speed -= gravity
     else:
-        y_speed += gravity
+        return True, 0
 
-    print(y_speed)
     return on_ground, y_speed
 
 def collide_ground(y_speed):
-    global player, cur_chunks
-    pot_position = player.pos
-    pot_position[1] += y_speed
-    final_pos= cur_chunks[2].ground_col(player, pot_position)             # if still falling final_pos is None
+    global player, cur_chunks, cur_chunk_pos
+    # pot_position = player.pos
+    # pot_position[1] += y_speed
+    # final_pos= cur_chunks[2].ground_col(player, pot_position)             # if still falling final_pos is None
+    final_pos = None
+    final_pos = cur_chunks[2].col_g(player, cur_chunk_pos)
 
     return final_pos
 

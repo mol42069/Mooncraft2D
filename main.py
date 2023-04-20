@@ -46,11 +46,11 @@ def main():
     root.fill(grey)
     chunk_width = 64
     cur_pos = [0, -15]
-    chunks = {0 : chunk.Chunk(0, -15, chunk_width, seed, s_all, sprite_size)}
-    chunks.update({-1 : chunk.Chunk(0 - chunk_width, -15, chunk_width, seed - chunk_width, s_all, sprite_size)})
-    chunks.update({1 : chunk.Chunk(0 + chunk_width, -15, chunk_width, seed + chunk_width, s_all, sprite_size)})
-    chunks.update({-2: chunk.Chunk(0 - 2 * chunk_width, -15, chunk_width, seed - 2 * chunk_width, s_all, sprite_size)})
-    chunks.update({2: chunk.Chunk(0 + 2 * chunk_width, -15, chunk_width, seed + 2 * chunk_width, s_all, sprite_size)})
+    chunks = {0 : chunk.Chunk(0, -20, chunk_width, seed, s_all, sprite_size)}
+    chunks.update({-1 : chunk.Chunk(0 - chunk_width, -20, chunk_width, seed - chunk_width, s_all, sprite_size)})
+    chunks.update({1 : chunk.Chunk(0 + chunk_width, -20, chunk_width, seed + chunk_width, s_all, sprite_size)})
+    chunks.update({-2: chunk.Chunk(0 - 2 * chunk_width, -20, chunk_width, seed - 2 * chunk_width, s_all, sprite_size)})
+    chunks.update({2: chunk.Chunk(0 + 2 * chunk_width, -20, chunk_width, seed + 2 * chunk_width, s_all, sprite_size)})
 
     fps_counter = 0
     t = time.time()

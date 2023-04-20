@@ -9,8 +9,9 @@ class Block:
         self.sprite = pg.transform.scale(sprite, (sprite_size, sprite_size))
         self.rec = self.sprite.get_rect()
         self.pos = s_pos
-        self.rec.topleft = [ self.pos[0] * sprite_size - sprite_size / 2,
-                             self.pos[1] * sprite_size - sprite_size / 2
+        self.rec.topleft = [
+                            self.pos[0] * sprite_size - sprite_size / 2,
+                            self.pos[1] * sprite_size - sprite_size / 2
                             ]
 
     def get_data(self):
@@ -29,6 +30,11 @@ class Block:
 
         return surface
 
-    def collides(self, player_rec):
+    def collides(self, player_rec, chunk_pos):
+        position = [
+                    self.pos[0] * chunk_pos[0],
+                    self.pos[1] * chunk_pos[1]
+                    ]
+        print(position)
         return self.rec.colliderect(player_rec)
 
